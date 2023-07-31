@@ -1,0 +1,26 @@
+import unittest
+from datetime import datetime
+from car import Car
+from sternman_engine import SternmanEngine
+
+class TestSternmanEngine(unittest.TestCase):
+    def test_engine_should_be_serviced_true(self):
+        # Set up the SternmanEngine instance with warning light ON
+        last_service_date = datetime(2023, 1, 1)  # Replace with your desired date
+        warning_light_is_on = True
+        engine = SternmanEngine(last_service_date, warning_light_is_on)
+
+        # The engine_should_be_serviced() method should return True when the warning light is ON
+        self.assertTrue(engine.engine_should_be_serviced())
+
+    def test_engine_should_be_serviced_false(self):
+        # Set up the SternmanEngine instance with warning light OFF
+        last_service_date = datetime(2023, 1, 1)  # Replace with your desired date
+        warning_light_is_on = False
+        engine = SternmanEngine(last_service_date, warning_light_is_on)
+
+        # The engine_should_be_serviced() method should return False when the warning light is OFF
+        self.assertFalse(engine.engine_should_be_serviced())
+
+if __name__ == "__main__":
+    unittest.main()
