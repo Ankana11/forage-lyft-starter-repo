@@ -1,0 +1,27 @@
+import unittest
+from datetime import datetime
+from car import Car
+from capulet_engine import CapuletEngine
+
+class TestCapuletEngine(unittest.TestCase):
+    def test_engine_should_be_serviced_true(self):
+        # Set up the CapuletEngine instance
+        last_service_date = datetime(2023, 1, 1)  # Replace with your desired date
+        current_mileage = 40000
+        last_service_mileage = 10000
+        engine = CapuletEngine(last_service_date, current_mileage, last_service_mileage)
+
+    def test_engine_should_be_serviced_false(self):
+        # Set up the CapuletEngine instance
+        last_service_date = datetime(2023, 1, 1)  # Replace with your desired date
+        current_mileage = 20000
+        last_service_mileage = 10000
+        engine = CapuletEngine(last_service_date, current_mileage, last_service_mileage)
+
+       
+
+if __name__ == "__main__":
+    unittest.main()
+
+
+
