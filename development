@@ -1,0 +1,87 @@
+from abc import ABC, abstractmethod
+from datetime import datetime
+
+class CarModel(ABC):
+    def __init__(self, model_name, last_service_date):
+        self.model_name = model_name
+        self.last_service_date = last_service_date
+
+    @abstractmethod
+    def engine_should_be_serviced(self):
+        pass
+
+class ServiceCriteria(ABC):
+    @abstractmethod
+    def needs_service(self, car_model):
+        pass
+
+class NubbinBattery:
+    pass
+
+class SpindlerBattery:
+    def __init__(self, last_service_date):
+        self.last_service_date = last_service_date.replace(year=last_service_date.year + 3)
+
+# Concrete car models
+class Thovex(CarModel):
+    def engine_should_be_serviced(self):
+        # Add specific checks for Thovex model
+        return False
+
+class Glissade(CarModel):
+    def engine_should_be_serviced(self):
+        # Add specific checks for Glissade model
+        return False
+
+# Concrete service criteria
+class DefaultServiceCriteria(ServiceCriteria):
+    def needs_service(self, car_model):
+        service_threshold_date = car_model.last_service_date.replace(year=car_model.last_service_date.year + 2)
+        if service_threshold_date < datetime.today().date() or car_model.engine_should_be_serviced():
+            return True
+        else:
+            return False
+
+class ExtendedServiceCriteria(ServiceCriteria):
+    def needs_service(self, car_model):
+        # Add additional service criteria here
+        return False
+
+# New tire service criteria
+class CarFactory:
+    @staticmethod
+    def needs_tire_service(tire_wear_array, tire_type):
+        if tire_type == "Carrigan":
+            return any(wear >= 0.9 for wear in tire_wear_array)
+        elif tire_type == "Octoprime":
+            return sum(tire_wear_array) >= 3
+        else:
+            return False
+
+# Example usage
+if __name__ == "__main__":
+    thovex_last_service_date = datetime(2021, 7, 1)
+    thovex = Thovex("Thovex", thovex_last_service_date)
+
+    glissade_last_service_date = datetime(2022, 3, 15)
+    glissade = Glissade("Glissade", glissade_last_service_date)
+
+    default_service_criteria = DefaultServiceCriteria()
+    extended_service_criteria = ExtendedServiceCriteria()
+
+    # Example usage of the SpindlerBattery class with updated service requirement
+    spindler_battery = SpindlerBattery(thovex_last_service_date)
+
+    # Example usage of tire servicing criteria
+    carrigan_tire_wear = [0.8 ,0.7, 0.85, 0.9]
+    octoprime_tire_wear = [0.6, 1.0, 0.9, 0.5]
+
+    if default_service_criteria.needs_service(thovex) or CarFactory.needs_tire_service(carrigan_tire_wear, "Carrigan"):
+        print("Thovex needs service or tire servicing.")
+    else:
+        print("Thovex does not need service or tire servicing.")
+
+    if extended_service_criteria.needs_service(glissade) or CarFactory.needs_tire_service(octoprime_tire_wear, "Octoprime"):
+        print("Glissade needs service or tire servicing.")
+    else:
+        print("Glissade does not need service or tire servicing.")
